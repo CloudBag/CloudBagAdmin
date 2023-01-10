@@ -25,12 +25,7 @@ const createWindow = () => {
   mainWindow.loadURL(path.join(__dirname, 'views/login.ejs'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-
-  ipcMain.on('form-submission', function (event, firstname) {
-    console.log("this is the firstname from the form ->", firstname)
-    mainWindow.loadFile(path.join(__dirname, 'Prueba.html'));
-  });
+  // mainWindow.webContents.openDevTools();
 
 };
 
@@ -58,3 +53,7 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+ipcMain.on('loginForm-submit', function (event, args) {
+  console.log("[User, password] ->", args)
+  mainWindow.loadFile(path.join(__dirname, 'views/AdminDashBoard.ejs'));
+});

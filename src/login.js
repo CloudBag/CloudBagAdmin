@@ -3,9 +3,8 @@ const {ipcRenderer} = require('electron')
 const loginForm=document.getElementById("LoginForm");
 
 loginForm.addEventListener("submit", (e) => {
-  console.log('entro');
   e.preventDefault()
-  let firstname = document.getElementById("nickName").value;
-  ipcRenderer.send('form-submission', firstname)
+  let formData = [document.getElementById("nickName").value, document.getElementById("Password").value]
+  ipcRenderer.send('loginForm-submit', formData)
 })
 
