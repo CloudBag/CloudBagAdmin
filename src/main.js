@@ -1,8 +1,25 @@
-const { app, BrowserWindow , ipcMain } = require('electron');
+const {app, BrowserWindow, ipcMain, Tray, Menu} = require('electron');
 const path = require('path');
 const ejse = require('ejs-electron');
+const os = require('os');
+const {validateUser} = require('./users.js');
+const {startUp}= require('./express-server/server')
 
-let mainWindow
+let mainWindow;
+let user;
+
+let tray = null;
+app.whenReady().then(() => {
+  tray = new Tray('./public/images/logito.png');
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Item1', type: 'radio'},
+    {label: 'Item2', type: 'radio'},
+    {label: 'Item3', type: 'radio', checked: true},
+    {label: 'Item4', type: 'radio'},
+  ]);
+  tray.setToolTip('CloudBag');
+  tray.setContextMenu(contextMenu);
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -11,17 +28,18 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   // Create the browser window.
+  startUp()
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: './public/images/logito.png',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  // and load the index.html of the app.
+  // and load the html of the app.
   mainWindow.loadURL(path.join(__dirname, 'views/login.ejs'));
 
   // Open the DevTools.
@@ -53,7 +71,13 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-ipcMain.on('loginForm-submit', function (event, args) {
-  console.log("[User, password] ->", args)
-  mainWindow.loadFile(path.join(__dirname, 'views/AdminDashBoard.ejs'));
+ipcMain.on('loginForm-submit', function(event, formData) {
+  console.log('[User, password] ->', formData);
+  user = validateUser(formData);
+  console.log(user);
+  if (user.rango === 'admin') {
+    mainWindow.loadFile(path.join(__dirname, 'views/AdminDashBoard.ejs'));
+  } else {
+    mainWindow.reload();
+  }
 });
