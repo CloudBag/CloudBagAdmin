@@ -18,18 +18,18 @@ let LoggedIn;
 let UserWish;
 
 exports.startUp = () => {
-  console.log("Probando")
+  console.log('Probando');
   if (!fs.existsSync(CloudBagLoc))
     fs.mkdir(CloudBagLoc, () => {
     });
 
-  if (!fs.existsSync(path.join(CloudBagLoc, 'usersFiles')))
-    fs.mkdir(path.join(CloudBagLoc, 'usersFiles'), () => {
+  if (!fs.existsSync(path.join(CloudBagLoc, 'UserFiles')))
+    fs.mkdir(path.join(CloudBagLoc, 'UserFiles'), () => {
     });
 
   if (!fs.existsSync(path.join(CloudBagLoc, 'Password.psw')))
     fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'),
-        'admin;admin;admin/ge;ge;admin');
+        'admin;admin;admin');
 
   if (!fs.existsSync(path.join(CloudBagLoc, 'Sesions.psw')))
     fs.writeFileSync(path.join(CloudBagLoc, 'Sesions.psw'), '');
@@ -44,35 +44,36 @@ function StartServer() {
   let isPasswordIncorrect = 0;
   let clients = [];
   LoggedIn = {};
-  app.use(express.static(path.join(CloudBagLoc, 'userFiles')));
+  app.use(express.static(path.join(CloudBagLoc, 'UserFiles')));
   app.use(parser.urlencoded({extended: false}));
   app.set('view engine', 'ejs');
   // GET /////////////////////////////////////////////////////////////////////////////////////////////////////////////
   app.get('/', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
-    LoggedIn = CheckClient(req, clients, LoggedIn)[2]
+    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
 
-    if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-        null) {
-      switch (userData.rango) {
-        case 'admin':
-          res.render(path.join(__dirname, '/views/pages/Admin/HomeAdmin'));
-          break;
-        case 'user':
-          res.render(path.join(__dirname, '/views/pages/User/HomeUser'));
-          break;
-
-      }
-    } else {
-      res.redirect('/Login');
-    }
+    // if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
+    //     null) {
+    //   switch (userData.rango) {
+    //     case 'admin':
+    //       res.render(path.join(__dirname, '/views/pages/Admin/HomeAdmin'));
+    //       break;
+    //     case 'user':
+    //       res.render(path.join(__dirname, '/views/pages/User/HomeUser'));
+    //       break;
+    //
+    //   }
+    // } else {
+    //   res.redirect('/Login');
+    // }
   });
-  app.get('/test', (req, res) =>{
-    console.log("Test")
-    res.send("Prueba")
 
-  })
+  app.get('/test', (req, res) => {
+    console.log('Test');
+    res.send('Prueba');
+  });
+
   app.get('/Login', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
@@ -84,6 +85,7 @@ function StartServer() {
       res.render(path.join(__dirname, '/views/pages/login'));
     }
   });
+
   app.get('/GetFromPC', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
@@ -118,27 +120,26 @@ function StartServer() {
 
     res.redirect('/');
   });
+
   // POST ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   app.post('/Login', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
     LoggedIn = CheckClient(req, clients, LoggedIn)[2];
-    let nickName = req.body.nickName;
-    let EnteredPassword = req.body.Password;
-    users.validateUser([nickName, EnteredPassword]);
+    let credentials = [req.body.nickName, req.body.Password];
+    userData = users.validateUser(credentials);
     if (userData.NickName != null && userData.password != null &&
         userData.rango != null) {
-
       users.registSesion(userData.NickName);
       console.log(users.extractSesions());
       isPasswordIncorrect = false;
       LoggedIn[clientIp] = true;
-      res.redirect('/');
+      res.json(userData);
     } else {
-      res.redirect('/Login');
-      isPasswordIncorrect = true;
+      res.status(400).json({message: 'Bad Request'});
     }
   });
+
   app.post('/SendData', (req, res, next) => {
     const form = formidable();
     form.parse(req, (err, fields, files) => {
@@ -228,7 +229,7 @@ function StartServer() {
     }
 
     console.log('Goto ' + ('http://' + address + ':' + port.toString() +
-        '/')+' in any web browser');
+        '/') + ' in any web browser');
     console.log('in your phone or any other device to use CloudBagDrop.');
   });
 }

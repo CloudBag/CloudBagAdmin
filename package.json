@@ -12,11 +12,24 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": {
-    "name": "Eduardo Consalvo",
-    "email": "educon001@gmail.com"
-  },
-  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Eduardo Consalvo",
+      "email": "educon001@gmail.com",
+      "url": "https://github.com/Educon001"
+    },
+    {
+      "name": "Marco Castro",
+      "email": "castroo8a2@gmail.com",
+      "url": "https://github.com/Marco-Castro01"
+    },
+    {
+      "name": "Steiker Mieles",
+      "email": "steiker.m2002@gmail.com",
+      "url": "https://github.com/Steiks10"
+    }
+  ],
+  "license": "Bag",
   "dependencies": {
     "animate.css": "^4.1.1",
     "ejs-electron": "^2.1.1",

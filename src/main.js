@@ -4,6 +4,7 @@ const ejse = require('ejs-electron');
 const os = require('os');
 const {validateUser} = require('./users.js');
 const {startUp}= require('./express-server/server')
+const fs = require('fs');
 
 let mainWindow;
 let user;
@@ -39,10 +40,14 @@ const createWindow = () => {
   });
 
   // and load the html of the app.
-  mainWindow.loadURL(path.join(__dirname, 'views/login.ejs'));
+  mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'));
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
+
+  mainWindow.once('ready-to-show', () =>{
+    mainWindow.maximize();
+  })
 
 };
 
