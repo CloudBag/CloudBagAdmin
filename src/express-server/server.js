@@ -69,8 +69,8 @@ function StartServer() {
     }
   });
   app.get('/test', (req, res) =>{
-    console.log("Gay el que le de request")
-    res.send("Pendejo el que lo lea")
+    console.log("Test")
+    res.send("Prueba")
 
   })
   app.get('/Login', (req, res) => {
