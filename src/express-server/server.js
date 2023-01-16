@@ -6,6 +6,7 @@ const express = require('express');
 const parser = require('body-parser');
 const formidable = require('formidable');
 const users = require('../users');
+const cors = require('cors');
 
 console.log(CloudBagLoc);
 const port = 3000;
@@ -39,14 +40,16 @@ exports.startUp = () => {
 };
 
 function StartServer() {
-  const saveLocation = CloudBagLoc;
+  const saveLocation = path.join(CloudBagLoc, 'UserFiles');
   const app = express();
   let isPasswordIncorrect = 0;
   let clients = [];
   LoggedIn = {};
-  app.use(express.static(path.join(CloudBagLoc, 'UserFiles')));
+  app.use(express.static(saveLocation));
   app.use(parser.urlencoded({extended: false}));
-  app.set('view engine', 'ejs');
+  app.use(express.json());
+  app.use(cors());
+
   // GET /////////////////////////////////////////////////////////////////////////////////////////////////////////////
   app.get('/', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
@@ -71,7 +74,7 @@ function StartServer() {
 
   app.get('/test', (req, res) => {
     console.log('Test');
-    res.send('Prueba');
+    res.json('Prueba');
   });
 
   app.get('/Login', (req, res) => {
@@ -126,7 +129,9 @@ function StartServer() {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
     LoggedIn = CheckClient(req, clients, LoggedIn)[2];
+    console.log(req.body);
     let credentials = [req.body.nickName, req.body.Password];
+    console.log(credentials);
     userData = users.validateUser(credentials);
     if (userData.NickName != null && userData.password != null &&
         userData.rango != null) {
@@ -140,50 +145,15 @@ function StartServer() {
     }
   });
 
-  app.post('/SendData', (req, res, next) => {
-    const form = formidable();
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        next(err);
-        return;
-      }
-      fs.mkdir(path.join(saveLocation, fields.BatchName), () => {
-      });
-      console.log('\nFiles saved at:');
-      let fileCounter = 0;
-      for (let file in files) {
-        fileCounter++;
-      }
-      let fileCounter2 = 0;
-      for (let file in files) {
-        fileCounter2++;
-        let tempPath = files[file]['filepath'];
-        let newPath = path.join(saveLocation, fields.BatchName,
-            files[file]['originalFilename']);
-
-        fs.rename(tempPath, newPath, () => {
-        });
-
-        if (fileCounter2 < fileCounter) {
-          console.log('    ' + newPath);
-        }
-      }
-
-      res.redirect('/');
-    });
-  });
   app.post('/SendDataToCloudBag', (req, res, next) => {
-    const CloudBagLocation = path.join(CloudBagLoc, 'CloudBag');
-
     const form = formidable();
-
     form.parse(req, (err, fields, files) => {
       if (err) {
         next(err);
         return;
       }
 
-      fs.mkdir(path.join(CloudBagLocation, fields.BatchName), () => {
+      fs.mkdir(path.join(saveLocation, fields.BatchName), () => {
       });
 
       console.log('\nFiles saved to CloudBag: ');

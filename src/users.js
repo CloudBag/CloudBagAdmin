@@ -25,3 +25,13 @@ exports.validateUser = (credentials) => {
   )
   return userData;
 }
+
+exports.extractSesions=()=>{
+  let sesiones=fs.readFileSync(path.join(CloudBagLoc, "Sesions.psw")).toString()
+  return sesiones.split("|")
+}
+
+exports.registSesion=(name)=>{
+  var today = new Date();
+  fs.appendFileSync(path.join(CloudBagLoc, 'Sesions.psw'), name+";"+today.toLocaleString()+"|")
+}
