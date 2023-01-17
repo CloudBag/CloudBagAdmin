@@ -16,7 +16,7 @@ let userData = {
   rango: null,
 };
 let LoggedIn;
-let UserWish;
+let userNicknames;
 
 exports.startUp = () => {
   console.log('Probando');
@@ -45,6 +45,7 @@ function StartServer() {
   let isPasswordIncorrect = 0;
   let clients = [];
   LoggedIn = {};
+  userNicknames = {};
   app.use(express.static(saveLocation));
   app.use(parser.urlencoded({extended: false}));
   app.use(express.json());
@@ -136,9 +137,11 @@ function StartServer() {
     if (userData.NickName != null && userData.password != null &&
         userData.rango != null) {
       users.registSesion(userData.NickName);
-      console.log(users.extractSesions());
+      // console.log(users.extractSesions());
       isPasswordIncorrect = false;
       LoggedIn[clientIp] = true;
+      userNicknames[clientIp] = userData.NickName
+      console.log(userNicknames);
       res.json(userData);
     } else {
       res.status(400).json({message: 'Bad Request'});
@@ -147,13 +150,18 @@ function StartServer() {
 
   app.post('/SendDataToCloudBag', (req, res, next) => {
     const form = formidable();
+    let clientip = req.ip;
     form.parse(req, (err, fields, files) => {
       if (err) {
         next(err);
         return;
       }
 
-      fs.mkdir(path.join(saveLocation, fields.BatchName), () => {
+      if (!fs.existsSync(path.join(saveLocation, userNicknames[clientip])))
+        fs.mkdir(path.join(saveLocation, userNicknames[clientip]), () => {
+        });
+
+      fs.mkdir(path.join(saveLocation, userNicknames[clientip], fields.BatchName), () => {
       });
 
       console.log('\nFiles saved to CloudBag: ');
@@ -167,14 +175,14 @@ function StartServer() {
       for (let file in files) {
         fileCounter2++;
         let tempPath = files[file]['filepath'];
-        let newPath = path.join(CloudBagLocation, fields.BatchName,
+        let newPath = path.join(saveLocation, userNicknames[clientip], fields.BatchName,
             files[file]['originalFilename']);
 
         fs.rename(tempPath, newPath, () => {
         });
 
         if (fileCounter2 < fileCounter) {
-          console.log('    ' + newPath.green.bold);
+          console.log('    ' + newPath);
         }
       }
 
