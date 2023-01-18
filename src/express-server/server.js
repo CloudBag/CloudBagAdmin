@@ -52,31 +52,6 @@ function StartServer() {
   app.use(cors());
 
   // GET /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  app.get('/', (req, res) => {
-    let clientIp = CheckClient(req, clients, LoggedIn)[0];
-    clients = CheckClient(req, clients, LoggedIn)[1];
-    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
-
-    // if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-    //     null) {
-    //   switch (userData.rango) {
-    //     case 'admin':
-    //       res.render(path.join(__dirname, '/views/pages/Admin/HomeAdmin'));
-    //       break;
-    //     case 'user':
-    //       res.render(path.join(__dirname, '/views/pages/User/HomeUser'));
-    //       break;
-    //
-    //   }
-    // } else {
-    //   res.redirect('/Login');
-    // }
-  });
-
-  app.get('/test', (req, res) => {
-    console.log('Test');
-    res.json('Prueba');
-  });
 
   app.get('/Login', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
@@ -91,38 +66,37 @@ function StartServer() {
   });
 
   app.get('/GetFromPC', (req, res) => {
+    console.log('hola');
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
     LoggedIn = CheckClient(req, clients, LoggedIn)[2];
 
-    if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-        null) {
-      let CloudBagFiles = walk(path.join(CloudBagLoc, 'CloudBag'));
-      res.render(path.join(__dirname, '/views/pages/GetFromPC'), {
-        CloudBagFiles: CloudBagFiles,
-      });
+    if (LoggedIn[clientIp] && userNicknames[clientIp] != null) {
+      let CloudBagFiles = walk(path.join(saveLocation, userNicknames[clientIp]));
+      res.send(CloudBagFiles);
     } else {
-      res.redirect('/Login');
+      res.status(400).json({message: 'Not logged in'});
     }
   });
-  app.get('/SendToCloudBag', (req, res) => {
-    let clientIp = CheckClient(req, clients, LoggedIn)[0];
-    clients = CheckClient(req, clients, LoggedIn)[1];
-    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
 
-    if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-        null) {
-      res.render(path.join(__dirname, '/views/pages/SendToCloudBag'));
-    } else {
-      res.redirect('/Login');
-    }
-  });
+  app.get('/GetFile/:file', (req, res) => {
+    console.log('file: ' + req.params.file);
+    console.log('logeao: ' +LoggedIn[req.ip]);
+    let fileName = req.params.file;
+    if (LoggedIn[req.ip] && userNicknames[req.ip] != null) {
+      let file = path.join(saveLocation, 'ge', fileName)
+      console.log('path: ' + file);
+      res.download(file);
+    }else
+      res.status(400).json({message: 'Not logged in'})
+  })
+
   app.get('/Logout', (req, res) => {
 
     let clientIp = req.ip;
     LoggedIn[clientIp] = false;
-
-    res.redirect('/');
+    console.log('logout');
+    res.status(200).json({message: 'ok'});
   });
 
   // POST ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +160,7 @@ function StartServer() {
         }
       }
 
-      res.redirect('/');
+      res.status(200).json({message: 'ok'});
     });
   });
 
