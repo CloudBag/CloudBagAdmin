@@ -34,17 +34,16 @@ exports.changePassword = (credentials) => {
   };
   let usuarios=extractUsers()
   let existUser=usuarios.indexOf(credentials[0]+";"+credentials[1]+";"+credentials[2])
-  if (existUser!==-1){
-    usuarios[existUser]=credentials[0]+";"+credentials[3]+";"+credentials[2];
+  if (existUser!==-1) {
+    usuarios[existUser] = credentials[0] + ";" + credentials[3] + ";" + credentials[2];
+    userData.NickName = credentials[0];
+    userData.password = credentials[3];
+    userData.rango = credentials[2];
+    fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'),
+        usuarios.join("/"));
+    return true;
   }
-  userData.NickName=credentials[0];
-  userData.password=credentials[3];
-  userData.rango=credentials[2];
-  fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'),
-      usuarios.join("/"));
-
-  return userData;
-
+  return false;
 };
 
 exports.extractSesions=()=>{
