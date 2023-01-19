@@ -9,20 +9,20 @@ const fs = require('fs');
 let mainWindow;
 let user;
 
-let tray = null;
-app.whenReady().then(() => {
-  tray = new Tray('./public/images/Logo.ico');
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Stop server', type: 'normal', click() {app.quit()}},
-  ]);
-  tray.setToolTip('CloudBag');
-  tray.setContextMenu(contextMenu);
-  tray.on('click', () => {
-    if (mainWindow.isDestroyed()){
-      createWindow()
-    }
-  })
-});
+// let tray = null;
+// app.whenReady().then(() => {
+//   tray = new Tray('./public/images/Logo.ico');
+//   const contextMenu = Menu.buildFromTemplate([
+//     {label: 'Stop server', type: 'normal', click() {app.quit()}},
+//   ]);
+//   tray.setToolTip('CloudBag');
+//   tray.setContextMenu(contextMenu);
+//   tray.on('click', () => {
+//     if (mainWindow.isDestroyed()){
+//       createWindow()
+//     }
+//   })
+// });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -66,7 +66,7 @@ app.on('ready', () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    mainWindow.destroy();
+    mainWindow.quit();
   }
 });
 
