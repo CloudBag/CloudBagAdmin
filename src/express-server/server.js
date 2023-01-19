@@ -6,6 +6,7 @@ const express = require('express');
 const parser = require('body-parser');
 const formidable = require('formidable');
 const users = require('../users');
+const cors = require('cors');
 
 console.log(CloudBagLoc);
 const port = 3000;
@@ -15,7 +16,7 @@ let userData = {
   rango: null,
 };
 let LoggedIn;
-let UserWish;
+let userNicknames;
 
 exports.startUp = () => {
   console.log('Probando');
@@ -39,40 +40,18 @@ exports.startUp = () => {
 };
 
 function StartServer() {
-  const saveLocation = CloudBagLoc;
+  const saveLocation = path.join(CloudBagLoc, 'UserFiles');
   const app = express();
   let isPasswordIncorrect = 0;
   let clients = [];
   LoggedIn = {};
-  app.use(express.static(path.join(CloudBagLoc, 'UserFiles')));
+  userNicknames = {};
+  app.use(express.static(saveLocation));
   app.use(parser.urlencoded({extended: false}));
-  app.set('view engine', 'ejs');
+  app.use(express.json());
+  app.use(cors());
+
   // GET /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  app.get('/', (req, res) => {
-    let clientIp = CheckClient(req, clients, LoggedIn)[0];
-    clients = CheckClient(req, clients, LoggedIn)[1];
-    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
-
-    // if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-    //     null) {
-    //   switch (userData.rango) {
-    //     case 'admin':
-    //       res.render(path.join(__dirname, '/views/pages/Admin/HomeAdmin'));
-    //       break;
-    //     case 'user':
-    //       res.render(path.join(__dirname, '/views/pages/User/HomeUser'));
-    //       break;
-    //
-    //   }
-    // } else {
-    //   res.redirect('/Login');
-    // }
-  });
-
-  app.get('/test', (req, res) => {
-    console.log('Test');
-    res.send('Prueba');
-  });
 
   app.get('/Login', (req, res) => {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
@@ -87,38 +66,37 @@ function StartServer() {
   });
 
   app.get('/GetFromPC', (req, res) => {
+    console.log('hola');
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
     LoggedIn = CheckClient(req, clients, LoggedIn)[2];
 
-    if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-        null) {
-      let CloudBagFiles = walk(path.join(CloudBagLoc, 'CloudBag'));
-      res.render(path.join(__dirname, '/views/pages/GetFromPC'), {
-        CloudBagFiles: CloudBagFiles,
-      });
+    if (LoggedIn[clientIp] && userNicknames[clientIp] != null) {
+      let CloudBagFiles = walk(path.join(saveLocation, userNicknames[clientIp]));
+      res.send(CloudBagFiles);
     } else {
-      res.redirect('/Login');
+      res.status(400).json({message: 'Not logged in'});
     }
   });
-  app.get('/SendToCloudBag', (req, res) => {
-    let clientIp = CheckClient(req, clients, LoggedIn)[0];
-    clients = CheckClient(req, clients, LoggedIn)[1];
-    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
 
-    if (LoggedIn[clientIp] && userData.NickName != null && userData.password !=
-        null) {
-      res.render(path.join(__dirname, '/views/pages/SendToCloudBag'));
-    } else {
-      res.redirect('/Login');
-    }
-  });
+  app.get('/GetFile/:file', (req, res) => {
+    console.log('file: ' + req.params.file);
+    console.log('logeao: ' +LoggedIn[req.ip]);
+    let fileName = req.params.file;
+    if (LoggedIn[req.ip] && userNicknames[req.ip] != null) {
+      let file = path.join(saveLocation, 'ge', fileName)
+      console.log('path: ' + file);
+      res.download(file);
+    }else
+      res.status(400).json({message: 'Not logged in'})
+  })
+
   app.get('/Logout', (req, res) => {
 
     let clientIp = req.ip;
     LoggedIn[clientIp] = false;
-
-    res.redirect('/');
+    console.log('logout');
+    res.status(200).json({message: 'ok'});
   });
 
   // POST ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,64 +104,59 @@ function StartServer() {
     let clientIp = CheckClient(req, clients, LoggedIn)[0];
     clients = CheckClient(req, clients, LoggedIn)[1];
     LoggedIn = CheckClient(req, clients, LoggedIn)[2];
+    console.log(req.body);
     let credentials = [req.body.nickName, req.body.Password];
+    console.log(credentials);
     userData = users.validateUser(credentials);
     if (userData.NickName != null && userData.password != null &&
         userData.rango != null) {
       users.registSesion(userData.NickName);
-      console.log(users.extractSesions());
+      // console.log(users.extractSesions());
       isPasswordIncorrect = false;
       LoggedIn[clientIp] = true;
+      userNicknames[clientIp] = userData.NickName
+      console.log(userNicknames);
+      res.json(userData);
+    } else {
+      res.status(400).json({message: 'Bad Request'});
+    }
+  });
+  app.post('/changePassword', (req, res) => {
+    let clientIp = CheckClient(req, clients, LoggedIn)[0];
+    clients = CheckClient(req, clients, LoggedIn)[1];
+    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
+    console.log(req.body);
+    let credentials = [req.body.oldPassword, req.body.Password];
+    console.log(credentials);
+    userData = users.validateUser(credentials);
+    if (userData.NickName != null && userData.password != null &&
+        userData.rango != null) {
+      users.registSesion(userData.NickName);
+      // console.log(users.extractSesions());
+      isPasswordIncorrect = false;
+      LoggedIn[clientIp] = true;
+      userNicknames[clientIp] = userData.NickName
+      console.log(userNicknames);
       res.json(userData);
     } else {
       res.status(400).json({message: 'Bad Request'});
     }
   });
 
-  app.post('/SendData', (req, res, next) => {
+  app.post('/SendDataToCloudBag', (req, res, next) => {
     const form = formidable();
+    let clientip = req.ip;
     form.parse(req, (err, fields, files) => {
       if (err) {
         next(err);
         return;
       }
-      fs.mkdir(path.join(saveLocation, fields.BatchName), () => {
-      });
-      console.log('\nFiles saved at:');
-      let fileCounter = 0;
-      for (let file in files) {
-        fileCounter++;
-      }
-      let fileCounter2 = 0;
-      for (let file in files) {
-        fileCounter2++;
-        let tempPath = files[file]['filepath'];
-        let newPath = path.join(saveLocation, fields.BatchName,
-            files[file]['originalFilename']);
 
-        fs.rename(tempPath, newPath, () => {
+      if (!fs.existsSync(path.join(saveLocation, userNicknames[clientip])))
+        fs.mkdir(path.join(saveLocation, userNicknames[clientip]), () => {
         });
 
-        if (fileCounter2 < fileCounter) {
-          console.log('    ' + newPath);
-        }
-      }
-
-      res.redirect('/');
-    });
-  });
-  app.post('/SendDataToCloudBag', (req, res, next) => {
-    const CloudBagLocation = path.join(CloudBagLoc, 'CloudBag');
-
-    const form = formidable();
-
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        next(err);
-        return;
-      }
-
-      fs.mkdir(path.join(CloudBagLocation, fields.BatchName), () => {
+      fs.mkdir(path.join(saveLocation, userNicknames[clientip], fields.BatchName), () => {
       });
 
       console.log('\nFiles saved to CloudBag: ');
@@ -197,18 +170,18 @@ function StartServer() {
       for (let file in files) {
         fileCounter2++;
         let tempPath = files[file]['filepath'];
-        let newPath = path.join(CloudBagLocation, fields.BatchName,
+        let newPath = path.join(saveLocation, userNicknames[clientip], fields.BatchName,
             files[file]['originalFilename']);
 
         fs.rename(tempPath, newPath, () => {
         });
 
         if (fileCounter2 < fileCounter) {
-          console.log('    ' + newPath.green.bold);
+          console.log('    ' + newPath);
         }
       }
 
-      res.redirect('/');
+      res.status(200).json({message: 'ok'});
     });
   });
 
