@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, Tray, Menu, dialog} = require('electron');
+const {app, BrowserWindow, ipcMain, Tray, Menu, dialog, nativeImage} = require('electron');
 const path = require('path');
 const ejse = require('ejs-electron');
 const os = require('os');
@@ -9,20 +9,23 @@ const fs = require('fs');
 let mainWindow;
 let user;
 
-// let tray = null;
-// app.whenReady().then(() => {
-//   tray = new Tray('./public/images/Logo.ico');
-//   const contextMenu = Menu.buildFromTemplate([
-//     {label: 'Stop server', type: 'normal', click() {app.quit()}},
-//   ]);
-//   tray.setToolTip('CloudBag');
-//   tray.setContextMenu(contextMenu);
-//   tray.on('click', () => {
-//     if (mainWindow.isDestroyed()){
-//       createWindow()
-//     }
-//   })
-// });
+let tray = null;
+
+app.whenReady().then(() => {
+  let icon = nativeImage.createFromPath(path.join(__dirname, '../public/images/Logo.ico'))
+  console.log(path.join(__dirname, '../public/images/Logo.ico'));
+  tray = new Tray(icon);
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Stop server', type: 'normal', click() {app.quit()}},
+  ]);
+  tray.setToolTip('CloudBag');
+  tray.setContextMenu(contextMenu);
+  tray.on('click', () => {
+    if (mainWindow.isDestroyed()){
+      createWindow()
+    }
+  })
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
