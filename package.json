@@ -1,8 +1,8 @@
 {
   "name": "cloudbagadmin",
-  "productName": "cloudbagadmin",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "CloudBagAdmin",
+  "version": "2.0.0",
+  "description": "Cloud Bag - Admin Dashboard",
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
