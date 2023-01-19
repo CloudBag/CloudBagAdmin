@@ -12,6 +12,9 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
+  "author": {
+    "name": "Bags United"
+  },
   "contributors": [
     {
       "name": "Eduardo Consalvo",

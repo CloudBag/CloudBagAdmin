@@ -24,7 +24,6 @@ exports.validateUser = (credentials) => {
       }
   )
   return userData;
-
 };
 
 exports.changePassword = (credentials) => {
@@ -57,3 +56,6 @@ exports.registSesion=(name)=>{
   var today = new Date();
   fs.appendFileSync(path.join(CloudBagLoc, 'Sesions.psw'), name+";"+today.toLocaleString()+"|")
 };
+
+exports.extractUsers = () => extractUsers();
+

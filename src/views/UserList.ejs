@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CloudBag - Admin Dashboard</title>
+    <link rel="stylesheet" href="../../public/css/UserList.css">
+    <%- include('./partials/_header') %>
+</head>
+<body>
+<%- include('./partials/_navbar') %>
+<%
+let userList = ejse.data('nicknames');
+let userCount = 1;
+for (let x in userList){
+    let user = userList[x];
+    %>
+    <div class="Element" id="user-<%= userCount%>">
+        <p class="text-user"><%= user %>
+            <button class="DeleteButton" onclick="">
+                <img id="Delete-<%= userCount%>" src="../../public/images/trash.png">
+            </button>
+            <button class="ModifyButton" onclick="">
+                <img id="Modify-<%= userCount%>" src="../../public/images/modify.png">
+            </button>
+        </p>
+    </div>
+    <%userCount++;
+}%>
+    <script src=""></script>
+</body>
+</html>

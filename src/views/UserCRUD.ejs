@@ -17,6 +17,100 @@
             justify-content: center;
         }
 
+        #news-cards{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 40px;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 40px;
+
+        }
+
+        #card1 a{
+            background: #0a497c;
+            cursor: pointer;
+            color: white;
+            font-color: white;
+            display: inline-block;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: 4px solid #fff;
+        }
+
+
+        #news-cards a:hover{
+            opacity: .9;
+        }
+
+
+        #card1 {
+            text-align: center;
+            padding: 10px 0;
+            background: #3C92CA;
+            display: inline-block;
+            border: 4px solid #2a2929;
+            border-radius: 12px;
+        }
+        #card1 svg{
+            align: center;
+        }
+
+        #card2 {
+            text-align: center;
+            padding: 10px 0;
+            background: rgb(230, 255, 0);
+            display: inline-block;
+            border: 4px solid #2a2929;
+            border-radius: 12px;
+        }
+
+        #card2 a{
+            background: #a28b16;
+            cursor: pointer;
+            color: white;
+            font-color: white;
+            display: inline-block;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: 4px solid #fff;
+        }
+
+        #card2 svg{
+            align: center;
+        }
+
+        #card3 {
+            text-align: center;
+            padding: 10px 0;
+            background: #d90101;
+            display: inline-block;
+            border: 4px solid #2a2929;
+            border-radius: 12px;
+        }
+
+        #card3 a{
+            background: #961010;
+            cursor: pointer;
+            color: white;
+            font-color: white;
+            display: inline-block;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: 4px solid #fff;
+        }
+
+        #card3 svg{
+            align: center;
+        }
+
         .SelectFrom{
             width: 40%;
             margin: 25px;
@@ -90,66 +184,31 @@
 
 <main>
     <div id="SelectFromDiv">
-
-        <div id="CrudUsers" class="SelectFrom">
-            <a href="#" class="SelectFromLinks">
-                XD
-                <svg height="256" width="256" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     viewBox="0 0 492.8 492.8" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path style="fill:#2C2F33;" d="M149.55,248.7v-71.1c0-3.3-1.7-6.4-4.4-8.2c-6.5-4.3-10.4-11.6-10.4-19.4V76.3
-                                c0-31.1,25.3-56.5,56.5-56.5h15.9c31.1,0,56.5,25.3,56.5,56.5V150c0,7.8-3.9,15.1-10.4,19.4c-2.8,1.8-4.4,4.9-4.4,8.2v71.1
-                                c0,5.5,4.4,9.9,9.9,9.9c5.5,0,9.9-4.4,9.9-9.9v-66.2c9.4-8.1,14.8-19.9,14.8-32.5V76.3c0-42.1-34.2-76.3-76.3-76.3h-15.9
-                                c-42.1,0-76.3,34.2-76.3,76.3V150c0,12.6,5.5,24.4,14.8,32.5v62.1c-15.3,7.7-60.8,31.9-103.1,66.7c-10.6,8.7-16.6,21.5-16.6,35.2
-                                V397c0,5.5,4.4,9.9,9.9,9.9s9.9-4.4,9.9-9.9v-50.5c0-7.8,3.4-15,9.4-19.9c44.9-36.9,93.6-61.5,102.9-66
-                                C146.65,258.4,149.55,253.7,149.55,248.7z"/>
-                            <path style="fill:#3C92CA;" d="M223.55,259.2c-5.5,0-9.9,4.4-9.9,9.9c0,4.2-1.8,8-4.7,10.7c-0.6,0.4-1.2,0.9-1.7,1.4
-                                c-2.3,1.6-5.1,2.5-8.1,2.5c-8,0-14.5-6.5-14.5-14.5c0-5.5-4.4-9.9-9.9-9.9s-9.9,4.4-9.9,9.9c0,8.1,2.9,15.6,7.6,21.5l-7.4,170.7
-                                c-0.1,2.9,1.1,5.8,3.3,7.8l23.4,21.1c1.9,1.7,4.3,2.5,6.6,2.5c2.4,0,4.8-0.9,6.6-2.6l23.8-21.5c2.2-2,3.4-4.8,3.3-7.8l-7.6-168.7
-                                c5.6-6.1,9.1-14.2,9.1-23.1C233.45,263.7,229.05,259.2,223.55,259.2z M198.35,469.5l-13.3-12l6.7-154.9c2.4,0.5,4.9,0.8,7.4,0.8
-                                c2,0,4-0.2,5.9-0.5l7,154.3L198.35,469.5z"/>
-                            <path style="fill:#3C92CA;" d="M403.55,316.2h69.3c5.5,0,9.9-4.4,9.9-9.9c0-19.3-7-38-19.8-52.5c-15-17-36.7-26.8-59.4-26.8
-                                c-5.5,0-9.9,4.4-9.9,9.9v69.3C393.65,311.8,398.15,316.2,403.55,316.2z M413.45,247.7c13.3,2.3,25.6,9,34.7,19.3
-                                c7.4,8.4,12.2,18.6,14.1,29.4h-48.8L413.45,247.7L413.45,247.7z"/>
-                            <path style="fill:#2C2F33;" d="M364.45,442.5c54.2,0,98.3-44.1,98.3-98.3c0-5.5-4.4-9.9-9.9-9.9h-78.5v-78.5
-                                c0-5.5-4.4-9.9-9.9-9.9c-54.2,0-98.3,44.1-98.3,98.3S310.25,442.5,364.45,442.5z M354.55,266.4v77.8c0,5.5,4.4,9.9,9.9,9.9h77.8
-                                c-4.9,38.6-37.9,68.6-77.8,68.6c-43.3,0-78.5-35.2-78.5-78.5C285.95,304.3,315.95,271.3,354.55,266.4z"/>
-                        </g>
-                    </g>
-                    </svg>
-                <p>Sección de Creación, Modificación y eliminación de Usuarios con Rango menor al de Administrador</p>
-            </a>
-        </div>
-        <div id="Reports" class="SelectFrom">
-            <a href="/" class="SelectFromLinks">
-                Reporte Diario de Sesiones de Usuarios
-                <svg width="256" height="256" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     viewBox="0 0 512 512" xml:space="preserve">
-                        <circle style="fill:#324A5E;" cx="256" cy="256" r="256"/>
-                    <path style="fill:#2B3B4E;" d="M510.538,283.236L389.603,162.302c0,0-112.612,143.634-132.973,169.605l-134.232,66.315
-	                    l112.93,112.93c72.223,5.816,146.442-18.884,201.692-74.133C480.068,393.969,504.563,339.401,510.538,283.236z"/>
-                    <polygon style="fill:#FFFFFF;" points="341.078,113.778 122.397,113.778 122.397,398.222 389.603,398.222 389.603,162.302 "/>
-                    <polygon style="fill:#E6F3FF;" points="389.603,162.302 341.078,113.778 256,113.778 256,398.222 389.603,398.222 "/>
-                    <polygon style="fill:#CFDBE6;" points="341.078,162.304 389.603,162.302 341.078,113.778 "/>
-                    <circle style="fill:#FD8469;" cx="188.768" cy="274.963" r="56.889"/>
-                    <path style="fill:#F4A200;" d="M245.657,274.963c0-31.418-25.471-56.889-56.889-56.889v56.889H245.657z"/>
-                    <g>
-                        <rect x="256" y="224.97" style="fill:#F1543F;" width="113.778" height="5.172"/>
-                        <rect x="256" y="212.902" style="fill:#F1543F;" width="113.778" height="5.172"/>
-                    </g>
-                    <g>
-                        <rect x="312.889" y="281.859" style="fill:#CFDBE6;" width="56.889" height="5.172"/>
-                        <rect x="312.889" y="269.791" style="fill:#CFDBE6;" width="56.889" height="5.172"/>
-                        <rect x="256" y="336.162" style="fill:#CFDBE6;" width="113.778" height="5.172"/>
-                        <rect x="256" y="324.094" style="fill:#CFDBE6;" width="113.778" height="5.172"/>
-                    </g>
+        <div id="news-cards">
+            <div id="card1">
+                <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"
+                     width="200px" height="200px" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve">
+                    <path d="M50,43v2.2c0,2.6-2.2,4.8-4.8,4.8H6.8C4.2,50,2,47.8,2,45.2V43c0-5.8,6.8-9.4,13.2-12.2
+                    c0.2-0.1,0.4-0.2,0.6-0.3c0.5-0.2,1-0.2,1.5,0.1c2.6,1.7,5.5,2.6,8.6,2.6s6.1-1,8.6-2.6c0.5-0.3,1-0.3,1.5-0.1
+                    c0.2,0.1,0.4,0.2,0.6,0.3C43.2,33.6,50,37.1,50,43z M26,2c6.6,0,11.9,5.9,11.9,13.2S32.6,28.4,26,28.4s-11.9-5.9-11.9-13.2
+                    S19.4,2,26,2z"/>
                 </svg>
-                <p>Reporte diario de las conecciones de los usuarios</p>
-
-            </a>
+                <a href="./CreateUser.ejs" class="SelectFromLinks">
+                <h3>Crear usuario>></h3>
+                </a>
+                <p>Crea un usuario ermano, CREALO YA!!!!!</p>
+            </div>
+            <div id="card2">
+                <svg width="200px" height="200px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" d="M9 0H7L6.44943 2.20228C5.9349 2.33954 5.44758 2.54347 4.9973 2.80426L3.05026 1.63604L1.63605 3.05025L2.80427 4.99728C2.54348 5.44757 2.33954 5.93489 2.20228 6.44943L0 7V9L2.20228 9.55057C2.33954 10.0651 2.54347 10.5524 2.80427 11.0027L1.63605 12.9497L3.05026 14.364L4.99729 13.1957C5.44757 13.4565 5.93489 13.6605 6.44943 13.7977L7 16H9L9.55057 13.7977C10.0651 13.6605 10.5524 13.4565 11.0027 13.1957L12.9498 14.364L14.364 12.9497L13.1957 11.0027C13.4565 10.5524 13.6605 10.0651 13.7977 9.55057L16 9V7L13.7977 6.44943C13.6605 5.9349 13.4565 5.44758 13.1957 4.9973L14.364 3.05025L12.9498 1.63603L11.0027 2.80426C10.5524 2.54347 10.0651 2.33954 9.55057 2.20228L9 0ZM8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" fill="#030708" fill-rule="evenodd"/></svg>
+                <a id="UserListButton" class="SelectFromLinks">
+                    <h3>Modificar usuario></h3>
+                </a>
+                <p>Modifica un usuario ermano, Modificalo YA!!!!!</p>
+            </div>
         </div>
     </div>
 </main>
+    <script src="../UserCrud.js"></script>
 </body>
 </html>
