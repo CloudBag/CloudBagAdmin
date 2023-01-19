@@ -69,7 +69,7 @@ app.on('ready', () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    mainWindow.quit();
+    mainWindow.destroy();
   }
 });
 
