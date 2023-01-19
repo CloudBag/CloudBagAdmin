@@ -126,7 +126,9 @@ function StartServer() {
     console.log(req.body);
     let credentials = [req.body.nickName,req.body.oldPassword, req.body.rango,req.body.newPassword];
     console.log(credentials);
-    if (users.changePassword(credentials)) {
+    let couldChange = users.changePassword(credentials);
+    console.log(couldChange);
+    if (couldChange) {
       res.status(200).json({message: 'ok'});
     } else {
       res.status(400).json({message: 'Bad Request'});
