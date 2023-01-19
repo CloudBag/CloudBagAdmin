@@ -2,7 +2,7 @@ const {app, BrowserWindow, ipcMain, Tray, Menu} = require('electron');
 const path = require('path');
 const ejse = require('ejs-electron');
 const os = require('os');
-const {validateUser} = require('./users.js');
+const {validateUser, extractUsers} = require('./users.js');
 const {startUp}= require('./express-server/server')
 const fs = require('fs');
 
@@ -87,4 +87,16 @@ ipcMain.on('loginForm-submit', function(event, formData) {
   } else {
     mainWindow.reload();
   }
+});
+
+ipcMain.on('display-user-list', function(event){
+  let userList = extractUsers();
+  console.log(userList);
+  let nicknames = [];
+  for (let x in userList){
+    nicknames.push(userList[x].split(';')[0]);
+  }
+  console.log(nicknames);
+  ejse.data('nicknames', nicknames)
+  mainWindow.loadFile(path.join(__dirname, 'views/UserList.ejs'));
 });

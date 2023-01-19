@@ -25,3 +25,5 @@ exports.validateUser = (credentials) => {
   )
   return userData;
 }
+
+exports.extractUsers = () => extractUsers();

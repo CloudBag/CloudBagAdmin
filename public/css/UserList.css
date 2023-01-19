@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #9a3535, #b75f26) no-repeat center top;
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100vh;
+}
+
+.Element{
+    background: #CCCEE8;
+    width: 50%;
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 1% 0;
+    align-items: center;
+}
+
+.text-user{
+    justify-content: right;
+}
+
+.ModifyButton > img{
+    width: 15px;
+    height: 15px;
+}
+
+.DeleteButton > img{
+    width: 15px;
+    height: 15px;
+}
+
