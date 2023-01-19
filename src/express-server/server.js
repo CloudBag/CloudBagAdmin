@@ -121,6 +121,27 @@ function StartServer() {
       res.status(400).json({message: 'Bad Request'});
     }
   });
+  app.post('/changePassword', (req, res) => {
+    let clientIp = CheckClient(req, clients, LoggedIn)[0];
+    clients = CheckClient(req, clients, LoggedIn)[1];
+    LoggedIn = CheckClient(req, clients, LoggedIn)[2];
+    console.log(req.body);
+    let credentials = [req.body.oldPassword, req.body.Password];
+    console.log(credentials);
+    userData = users.validateUser(credentials);
+    if (userData.NickName != null && userData.password != null &&
+        userData.rango != null) {
+      users.registSesion(userData.NickName);
+      // console.log(users.extractSesions());
+      isPasswordIncorrect = false;
+      LoggedIn[clientIp] = true;
+      userNicknames[clientIp] = userData.NickName
+      console.log(userNicknames);
+      res.json(userData);
+    } else {
+      res.status(400).json({message: 'Bad Request'});
+    }
+  });
 
   app.post('/SendDataToCloudBag', (req, res, next) => {
     const form = formidable();
