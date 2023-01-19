@@ -1,35 +1,62 @@
-body {
-    margin: 0;
+*{
     padding: 0;
-    background: linear-gradient(120deg, #9a3535, #b75f26) no-repeat center top;
-    background-size: cover;
-    font-family: sans-serif;
-    height: 100vh;
+    margin: 0;
+}
+
+html{
+    background-color: #F1EDFF;
 }
 
 .Element{
-    background: #CCCEE8;
+    background: #cccee8;
     width: 50%;
     margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     border-radius: 10px;
+    border-top: 5px solid 3F4764;
     padding: 1% 0;
-    align-items: center;
 }
 
-.text-user{
-    justify-content: right;
+.Element > p{
+    margin: 1% 4%;
+    font-family: "Oswald", sans-serif;
+    font-size: 1.25vw;
+}
+
+.ModifyButton{
+    background-color: #00000000;
+    float: right;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+
+.DeleteButton:hover{
+    opacity: .9;
+}
+
+.ModifyButton:hover{
+    opacity: .9;
+}
+
+.DeleteButton{
+    background-color: #00000000;
+    float: right;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .ModifyButton > img{
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
 }
 
 .DeleteButton > img{
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
 }
 

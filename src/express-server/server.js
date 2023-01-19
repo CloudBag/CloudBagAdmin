@@ -30,7 +30,7 @@ exports.startUp = () => {
 
   if (!fs.existsSync(path.join(CloudBagLoc, 'Password.psw')))
     fs.writeFileSync(path.join(CloudBagLoc, 'Password.psw'),
-        'admin;admin;admin/ge;ge;user');
+        'admin1;admin;admin/admin2;admin;admin');
 
   if (!fs.existsSync(path.join(CloudBagLoc, 'Sesions.psw')))
     fs.writeFileSync(path.join(CloudBagLoc, 'Sesions.psw'), '');
@@ -234,3 +234,6 @@ function walk(walkPath) {
 }
 
 exports.CloudBagLoc = CloudBagLoc;
+exports.logout = () => {
+
+}

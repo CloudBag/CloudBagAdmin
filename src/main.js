@@ -1,8 +1,8 @@
-const {app, BrowserWindow, ipcMain, Tray, Menu} = require('electron');
+const {app, BrowserWindow, ipcMain, Tray, Menu, dialog} = require('electron');
 const path = require('path');
 const ejse = require('ejs-electron');
 const os = require('os');
-const {validateUser, extractUsers} = require('./users.js');
+const {validateUser, extractUsers, createUser, extractSesions} = require('./users.js');
 const {startUp}= require('./express-server/server')
 const fs = require('fs');
 
@@ -11,15 +11,17 @@ let user;
 
 let tray = null;
 app.whenReady().then(() => {
-  tray = new Tray('./public/images/logito.png');
+  tray = new Tray('./public/images/Logo.ico');
   const contextMenu = Menu.buildFromTemplate([
-    {label: 'Item1', type: 'radio'},
-    {label: 'Item2', type: 'radio'},
-    {label: 'Item3', type: 'radio', checked: true},
-    {label: 'Item4', type: 'radio'},
+    {label: 'Stop server', type: 'normal', click() {app.quit()}},
   ]);
   tray.setToolTip('CloudBag');
   tray.setContextMenu(contextMenu);
+  tray.on('click', () => {
+    if (mainWindow.isDestroyed()){
+      createWindow()
+    }
+  })
 });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -33,12 +35,12 @@ const createWindow = () => {
     width: 800,
     height: 600,
     icon: './public/images/logito.png',
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-
   // and load the html of the app.
   mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'));
 
@@ -64,7 +66,7 @@ app.on('ready', () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    mainWindow.destroy();
   }
 });
 
@@ -98,4 +100,28 @@ ipcMain.on('display-user-list', function(event){
   console.log(nicknames);
   ejse.data('nicknames', nicknames)
   mainWindow.loadFile(path.join(__dirname, 'views/UserList.ejs'));
+});
+
+ipcMain.on('createForm-submit', function(event, formData){
+  couldCreate = createUser(formData);
+  console.log(couldCreate);
+  if (couldCreate){
+    mainWindow.loadFile(path.join(__dirname, 'views/AdminDashBoard.ejs'));
+  }else{
+    dialog.showMessageBox(null, {
+      type: 'warning',
+      title: 'Failed',
+      message: 'Usuario ya existe',
+    });
+    mainWindow.reload();
+  }
+})
+
+ipcMain.on('report', function(e) {
+  ejse.data('sessions', extractSesions());
+  mainWindow.loadFile(path.join(__dirname, 'views/report.ejs'));
+})
+
+ipcMain.on('logout-event', async function(event){
+  mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'))
 });

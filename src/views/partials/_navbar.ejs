@@ -1,11 +1,36 @@
 <nav id="NavBar">
-    <a href="/">
+    <a href="./AdminDashBoard.ejs">
         <img src="../../public/images/logo.png" />
         <h1>CloudBag</h1>
     </a>
 
-    <a href="./login.ejs">
+    <a>
+        <button id="getUserFiles">Open user Files</button>
         <button id="LogOut">Logout</button>
     </a>
 
+    <script>
+      const path= require('path')
+      const os= require('os')
+      const openExplorer = require('open-file-explorer');
+      document.getElementById('getUserFiles').addEventListener('click', (e) => {
+
+        const path2 = path.join(os.homedir(), 'CloudBag');
+        openExplorer(path.join(path2,'UserFiles'), err => {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            //Do Something
+          }
+        });
+
+      })
+
+      document.getElementById('LogOut').addEventListener('click', (e) => {
+        ipcRenderer.send('logout-event');
+      });
+    </script>
+
 </nav>
+

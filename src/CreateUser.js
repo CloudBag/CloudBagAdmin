@@ -1,9 +1,9 @@
 const {ipcRenderer} = require('electron')
 
-const loginForm=document.getElementById("CreateForm");
+const createForm = document.getElementById("CreateForm");
 
-loginForm.addEventListener("submit", (e) => {
+createForm.addEventListener("submit", (e) => {
   e.preventDefault()
-  let formData = [document.getElementById("nickName").value, document.getElementById("Password").value]
-  ipcRenderer.send('loginForm-submit', formData)
+  let formData = [document.getElementById("username").value, document.getElementById("password").value]
+  ipcRenderer.send('createForm-submit', formData)
 })

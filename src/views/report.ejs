@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>CloudBag - Admin Dashboard</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+
+        html{
+            background-color: #F1EDFF;
+        }
+
+        #SelectFromDiv{
+            display: flex;
+            justify-content: center;
+        }
+
+        .SelectFrom{
+            width: 40%;
+            margin: 25px;
+            border-radius: 15px;
+            padding: 10px;
+        }
+
+
+
+        #CrudUsers{
+            background-color: #45b367;
+        }
+
+        #Reports{
+            background-color: #166abe;
+        }
+
+
+
+        .SelectFromLinks{
+            text-decoration: none;
+            color: white;
+            font-family: "Oswald", sans-serif;
+            font-size: 1.15vw;
+            padding: 15px;
+        }
+
+        .SelectFromLinks > svg{
+            width: 100%;
+        }
+
+
+
+        #Arrow{
+            transform: translate(478px, 297px) rotate(0deg);
+            animation: linear Rotate2 2s infinite;
+            animation-delay: -1s;
+        }
+
+
+
+
+        #ArrowAction{transform: translate(-478px, -297px);}
+
+
+
+        @keyframes Rotate2 {
+            from{
+                transform: translate(478px, 297px) rotate(60deg);
+            }
+            to{
+                transform: translate(478px, 297px) rotate(-100deg);
+            }
+        }
+
+
+
+        @media only screen and (max-aspect-ratio: 2/3){
+            #SelectFromDiv {
+                flex-wrap: wrap;
+            }
+            .SelectFromLinks{
+                font-size: 3.5vw;
+            }
+        }
+    </style>
+    <%- include('./partials/_header') %>
+</head>
+<body>
+<%- include('./partials/_navbar') %>
+<%
+let sessions = ejse.data('sessions');
+%><p><%=sessions%></p>
+<script>const {ipcRenderer} = require ('electron')</script>
+</body>
+</html>
