@@ -84,7 +84,7 @@ function StartServer() {
     console.log('logeao: ' +LoggedIn[req.ip]);
     let fileName = req.params.file;
     if (LoggedIn[req.ip] && userNicknames[req.ip] != null) {
-      let file = path.join(saveLocation, 'ge', fileName)
+      let file = path.join(saveLocation, userNicknames[req.ip], fileName)
       console.log('path: ' + file);
       res.download(file);
     }else
